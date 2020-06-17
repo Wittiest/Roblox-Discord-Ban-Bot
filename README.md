@@ -13,14 +13,18 @@ Engine.
 * [Running the tests](#running-the-tests)
 
 ## Setup
-
-1.  Install dependencies:
-
-        npm install
+      npm install
 
 ## Running locally
 
+### Running server
+    gcloud auth application-default login
     npm start
+
+### Running DataStore Emulator
+
+    gcloud beta emulators datastore env-init
+    gcloud beta emulators datastore start
 
 ## Deploying to App Engine standard environment
 
