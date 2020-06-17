@@ -9,6 +9,31 @@ routes.get('/', (req, res) => {
   res.status(200).json({});
 });
 
+routes.post('/:userId/increment', async (req, res) => {
+  const userId = req.params.userId;
+  const deltaUnity = req.body.deltaUnity
+
+  console.log(`Incrementing unity by ${deltaUnity} for userId ${userId}`);
+
+  if (!deltaUnity) {
+    res.status(400).send({error: "deltaUnity must be present"})
+  }
+
+  const existingUnity = await UnityDao.fetchUnity(userId);
+  const updatedUnity = existingUnity + deltaUnity
+
+  if (updatedUnity < 0) {
+    updatedUnity = 0
+  }
+
+  console.log(`Persisting updatedUnity of ${updatedUnity} for userId ${userId}`);
+
+  const unity = await UnityDao.setUnity(userId, updatedUnity);
+
+  console.log(`Persisted updatedUnity of ${updatedUnity} for userId ${userId}`);
+  res.status(200).json({userId, totalUnity: updatedUnity});
+});
+
 routes.post('/:userId', async (req, res) => {
   const userId = req.params.userId;
   const totalUnity = req.body.totalUnity
