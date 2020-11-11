@@ -6,6 +6,8 @@ const noblox = require('noblox.js')
 const client = new SecretManagerServiceClient();
 
 const destroySecretVersion = async (cookieNameWithVersionToDestroy) => {
+	console.info(`Destroying cookie with name ${cookieNameWithVersionToDestroy}`);
+
 	const [version] = await client.destroySecretVersion({
 		name: cookieNameWithVersionToDestroy
 	});
@@ -37,21 +39,21 @@ const persistCookie = async (newCookie) => {
 }
 
 const refreshCookie = async () => {
-  let newCookie, fullSecretNameWithVersion;
+	const {fullSecretNameWithVersion, cookie} = await fetchCookie();
+	console.info(`fullSecretNameWithVersion: ${fullSecretNameWithVersion}`);
 
-  try {
-    newCookie = await noblox.refreshCookie();
-  } catch (err) {
-    console.log(`Received error with in-memory cookie, trying refresh with stored cookie`, err);
+	const newCookie = await noblox.refreshCookie(cookie);
 
-    const cookieDetails = await fetchCookie();
-		fullSecretNameWithVersion = cookieDetails.fullSecretNameWithVersion;
-    newCookie = await noblox.refreshCookie(cookieDetails.cookie);
-  }
+	console.info('Retrieved new cookie. Persisting...')
 
-  await persistCookie(newCookie);
+	await persistCookie(newCookie);
+
+	console.info(`Destroying old version, ${fullSecretNameWithVersion}`);
+
 	// Must destroy old secret version or you get charged insane amount
 	await destroySecretVersion(fullSecretNameWithVersion);
+
+	console.info('Finished cookie refresh sequence');
 }
 
 module.exports = {

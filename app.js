@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 const login = async () => {
-  const {cookie} = await fetchCookie();
+  const { cookie } = await fetchCookie();
 
   await noblox.setCookie(cookie);
 
@@ -31,6 +31,6 @@ login()
 
     setInterval(refreshCookie, ONE_HOUR)
   })
-  .catch(err => console.log("\n\nException during cookie auth\n\n", err));
+  .catch(err => console.log("\n\nException during initial cookie auth\n\n", err));
 
 module.exports = app;
