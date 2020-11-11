@@ -15,9 +15,9 @@ app.get('/', (req, res) => {
 });
 
 const login = async () => {
-  const oldCookie = await fetchCookie();
+  const {cookie} = await fetchCookie();
 
-  await noblox.setCookie(oldCookie);
+  await noblox.setCookie(cookie);
 
   return await noblox.getCurrentUser();
 }
