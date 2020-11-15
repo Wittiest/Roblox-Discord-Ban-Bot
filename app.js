@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json())
 app.use('/unity', require('./routes/unity'));
 app.use('/', require('./routes/promotion'));
+app.use('/', require('./routes/ban'));
 
 app.get('/', (req, res) => {
   res.status(200).send("Welcome to our unity server");
