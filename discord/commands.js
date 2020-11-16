@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const BanDao = require('../dao/BanDao');
+const RobloxUserApi = require('../utilities/RobloxUserApi');
 
 const NONADMIN_REJECT = 'You cannot use this command because you are not an admin.';
 const USER_IS_ALREADY_BANNED = 'This user is already banned';
@@ -31,8 +32,8 @@ class Commands {
         embeds.push(new Discord.MessageEmbed().setColor('#FF0000').setTitle('Ban List'));
       }
 
-      embeds[embeds.length - 1].addField(ban.userId, `
-        ${ban.username ? `username: ${ban.username}` : ''}
+      embeds[embeds.length - 1].addField(ban.username, `
+        ${ban.userId ? `userId: ${ban.userId}` : ''}
         admin: ${ban.admin}
         ${ban.reason ? `reason: ${ban.reason}` : ''}`);
     }
@@ -47,31 +48,37 @@ class Commands {
   async ban(author, args) {
     if (!this._authorIsAdmin(author)) return NONADMIN_REJECT;
 
-    const userId = args.shift();
-    const username = args.shift();
+    const userIdentifier = args.shift();
+
+    const identifiedUser = await RobloxUserApi.getUserFromIdentifier(userIdentifier);
+
+    if (!identifiedUser) { return `Cannot find ${userIdentifier}`; }
+
     const reason = args.join(" ");
 
-    const isBanned = await this._isUserBanned(userId);
+    const isBanned = await this._isUserBanned(identifiedUser.Id);
 
     if (isBanned) { return USER_IS_ALREADY_BANNED }
 
-    await BanDao.addBan(userId, this._authorFullName(author), username, reason);
+    await BanDao.addBan(identifiedUser.Id, this._authorFullName(author), identifiedUser.Username, reason);
 
-    return `Successfully banned ${userId}`;
+    return `Banned ${identifiedUser.Username}`;
   }
 
   async unban(author, args) {
     if (!this._authorIsAdmin(author)) return NONADMIN_REJECT;
 
-    const [userId] = args
+    const userIdentifier = args.shift();
+    const identifiedUser = await RobloxUserApi.getUserFromIdentifier(userIdentifier);
+    if (!identifiedUser) { return `Cannot find ${userIdentifier}`; }
 
-    const isBanned = await this._isUserBanned(userId);
+    const isBanned = await this._isUserBanned(identifiedUser.Id);
 
     if (!isBanned) { return USER_IS_NOT_BANNED }
 
-    await BanDao.deleteBan(userId);
+    await BanDao.deleteBan(identifiedUser.Id);
 
-    return `Unbanned ${userId}`;
+    return `Unbanned ${identifiedUser.Username}`;
   }
 
   async list_bans(author, args, sendEmbedMsg) {

@@ -16,7 +16,8 @@
     "@google-cloud/secret-manager": "^3.2.1",
     "discord.js": "^12.4.1",
     "express": "^4.16.4",
-    "noblox.js": "^4.7.3"
+    "noblox.js": "^4.7.3",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

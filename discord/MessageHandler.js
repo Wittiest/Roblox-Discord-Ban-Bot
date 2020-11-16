@@ -38,6 +38,7 @@ class MessageHandler {
 
   async handle({content, author, channel}) {
     if (this._shouldProcessMessage(channel) && this._msgIsCommand(content)) {
+      console.log(content);
       const {command, args} = this._parseCommand(content);
       console.log("COMMAND:", command);
       console.log("ARGS:", args);
