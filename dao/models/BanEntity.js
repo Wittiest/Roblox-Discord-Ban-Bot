@@ -10,10 +10,10 @@ const BAN_ENTITY_PARAMS = {
 }
 
 class BanEntity {
-  static getEntityForPersist(userId, username, admin, reason) {
+  static getEntityForPersist(userId, admin, username, reason) {
     return {
       key: BanEntity.getKey(userId),
-      data: BanEntity.createObject(userId, username, admin, reason)
+      data: BanEntity.createObject(userId, admin, username, reason)
     }
   }
 
@@ -21,7 +21,7 @@ class BanEntity {
     return dataStore.key([BAN_KEY, userId]);
   }
 
-  static createObject(userId, username, admin, reason) {
+  static createObject(userId, admin, username, reason) {
     return {
       [BAN_ENTITY_PARAMS.userId]: userId,
       [BAN_ENTITY_PARAMS.username]: username,

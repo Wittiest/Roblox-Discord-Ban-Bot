@@ -1,5 +1,6 @@
 const express = require('express');
 const noblox = require("noblox.js");
+const discordClient = require("./discord/DiscordBot");
 const { refreshCookie, fetchCookie } = require("./utilities/cookie");
 
 const PORT = process.env.PORT || 8080;

@@ -4,15 +4,8 @@ const { BanEntity, BAN_ENTITY_PARAMS, BAN_KEY } = require('./models/BanEntity');
 const dataStore = new Datastore();
 
 class BanDao {
-  /**
-   * Insert a ban record into the database.
-   *
-   * @param {integer} userId for a roblox account
-   * @param {string} admin user who issued the ban
-   * @param {string} reason reason for the ban
-   */
-  static async addBan(userId, username, admin, reason) {
-    const banEntity = BanEntity.getEntityForPersist(userId, username, admin, reason)
+  static async addBan(userId, admin, username, reason) {
+    const banEntity = BanEntity.getEntityForPersist(userId, admin, username, reason)
 
     console.log(JSON.stringify(banEntity));
 
