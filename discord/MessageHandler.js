@@ -1,6 +1,6 @@
 const Commands = require('./commands');
 
-const LOUNGE_CHANNEL_ID = '360826739472990218';
+const LOUNGE_CHANNEL_ID = '778032720054845480';
 
 class MessageHandler {
   constructor(client) {
