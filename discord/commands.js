@@ -8,7 +8,7 @@ const USER_IS_NOT_BANNED = 'This user is not on the ban list';
 
 class Commands {
   constructor() {
-    this.admins = ["Wittiest#9568", "Tune#1305", "Min#2020"];
+    this.admins = ["Wittiest#9568", "Tune#1305", "Tune#9988"];
     // TODO Gather list of admins who can run commands via google datastore
   }
 
