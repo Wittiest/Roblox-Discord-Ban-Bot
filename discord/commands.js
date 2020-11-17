@@ -82,8 +82,6 @@ class Commands {
   }
 
   async list_bans(author, args, sendEmbedMsg) {
-    if (!this._authorIsAdmin(author)) return NONADMIN_REJECT;
-
     const bans = await BanDao.fetchAllBans();
     const embeds = this._createBanListEmbeds(bans);
 
